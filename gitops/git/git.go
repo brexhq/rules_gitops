@@ -13,11 +13,9 @@ package git
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	oe "os/exec"
-	"path/filepath"
 
 	"github.com/adobe/rules_gitops/gitops/exec"
 )
@@ -41,11 +39,11 @@ func Clone(repo, dir, mirrorDir, primaryBranch, gitopsPath string) (*Repo, error
 	} else {
 		exec.Mustex("", "git", "clone", "-n", repo, dir)
 	}
-	exec.Mustex(dir, "git", "config", "--local", "core.sparsecheckout", "true")
-	genPath := fmt.Sprintf("%s/\n", gitopsPath)
-	if err := ioutil.WriteFile(filepath.Join(dir, ".git/info/sparse-checkout"), []byte(genPath), 0644); err != nil {
-		return nil, fmt.Errorf("Unable to create .git/info/sparse-checkout: %w", err)
-	}
+	// exec.Mustex(dir, "git", "config", "--local", "core.sparsecheckout", "true")
+	// genPath := fmt.Sprintf("%s/\n", gitopsPath)
+	// if err := ioutil.WriteFile(filepath.Join(dir, ".git/info/sparse-checkout"), []byte(genPath), 0644); err != nil {
+	// 	return nil, fmt.Errorf("Unable to create .git/info/sparse-checkout: %w", err)
+	// }
 	exec.Mustex(dir, "git", "checkout", primaryBranch)
 
 	return &Repo{
